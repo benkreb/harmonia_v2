@@ -1,0 +1,110 @@
+{
+  "case_type": "mass",
+  "image_size": 256,
+  "preprocessing": "square_pad + resize",
+  "image_type": "cropped_lesion_mammogram",
+  "class_mapping": {
+    "BENIGN": 0,
+    "MALIGNANT": 1
+  },
+  "splits": {
+    "train": {
+      "n_samples": 1132,
+      "n_patients": 613,
+      "n_benign": 603,
+      "n_malignant": 529,
+      "shape_X": [
+        1132,
+        256,
+        256,
+        1
+      ],
+      "shape_masks": [
+        1132,
+        256,
+        256,
+        1
+      ],
+      "shape_y": [
+        1132
+      ],
+      "dtype": "uint8",
+      "image_min_max": [
+        0,
+        255
+      ],
+      "mask_unique": [
+        0,
+        255
+      ],
+      "mask_area_ratio_mean": 0.4340473350282271,
+      "mask_area_ratio_median": 0.4407806396484375
+    },
+    "val": {
+      "n_samples": 238,
+      "n_patients": 132,
+      "n_benign": 117,
+      "n_malignant": 121,
+      "shape_X": [
+        238,
+        256,
+        256,
+        1
+      ],
+      "shape_masks": [
+        238,
+        256,
+        256,
+        1
+      ],
+      "shape_y": [
+        238
+      ],
+      "dtype": "uint8",
+      "image_min_max": [
+        0,
+        255
+      ],
+      "mask_unique": [
+        0,
+        255
+      ],
+      "mask_area_ratio_mean": 0.4366452513622637,
+      "mask_area_ratio_median": 0.439300537109375
+    },
+    "test": {
+      "n_samples": 260,
+      "n_patients": 132,
+      "n_benign": 154,
+      "n_malignant": 106,
+      "shape_X": [
+        260,
+        256,
+        256,
+        1
+      ],
+      "shape_masks": [
+        260,
+        256,
+        256,
+        1
+      ],
+      "shape_y": [
+        260
+      ],
+      "dtype": "uint8",
+      "image_min_max": [
+        0,
+        255
+      ],
+      "mask_unique": [
+        0,
+        255
+      ],
+      "mask_area_ratio_mean": 0.4388104952298678,
+      "mask_area_ratio_median": 0.439910888671875
+    }
+  },
+  "total_samples": 1630,
+  "total_patients": 877
+}

@@ -1,0 +1,170 @@
+{
+  "n_clients": 2,
+  "split_ratios": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "clients": {
+    "client_1": {
+      "train": {
+        "n_samples": 560,
+        "n_patients": 307,
+        "n_benign": 303,
+        "n_malignant": 257,
+        "shape_X": [
+          560,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          560,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          560
+        ],
+        "dtype": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ]
+      },
+      "val": {
+        "n_samples": 130,
+        "n_patients": 66,
+        "n_benign": 75,
+        "n_malignant": 55,
+        "shape_X": [
+          130,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          130,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          130
+        ],
+        "dtype": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ]
+      },
+      "test": {
+        "n_samples": 119,
+        "n_patients": 66,
+        "n_benign": 64,
+        "n_malignant": 55,
+        "shape_X": [
+          119,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          119,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          119
+        ],
+        "dtype": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ]
+      }
+    },
+    "client_2": {
+      "train": {
+        "n_samples": 582,
+        "n_patients": 306,
+        "n_benign": 312,
+        "n_malignant": 270,
+        "shape_X": [
+          582,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          582,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          582
+        ],
+        "dtype": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ]
+      },
+      "val": {
+        "n_samples": 116,
+        "n_patients": 66,
+        "n_benign": 57,
+        "n_malignant": 59,
+        "shape_X": [
+          116,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          116,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          116
+        ],
+        "dtype": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ]
+      },
+      "test": {
+        "n_samples": 123,
+        "n_patients": 66,
+        "n_benign": 63,
+        "n_malignant": 60,
+        "shape_X": [
+          123,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          123,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          123
+        ],
+        "dtype": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ]
+      }
+    }
+  }
+}

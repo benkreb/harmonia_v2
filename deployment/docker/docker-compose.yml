@@ -1,0 +1,11 @@
+services:
+  server:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile.server
+    ports:
+      - "8080:8080"
+    volumes:
+      - /opt/harmonia/data:/app/outputs/final_npy:ro
+      - ../../outputs:/app/outputs
+      - ../certs:/run/certs:ro

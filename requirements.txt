@@ -1,0 +1,20 @@
+# PyTorch — CUDA sürümünü https://pytorch.org/get-started/locally/ adresinden seçin
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Veri bilimi
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+scipy>=1.10.0
+
+# Görüntü işleme
+Pillow>=9.0.0
+opencv-python>=4.7.0
+
+# Araçlar
+tqdm>=4.65.0
+matplotlib>=3.7.0
+
+# Deney takibi (isteğe bağlı)
+tensorboard>=2.13.0

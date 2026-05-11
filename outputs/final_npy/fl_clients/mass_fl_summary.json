@@ -1,0 +1,224 @@
+{
+  "dataset": "CBIS-DDSM MASS FL clients",
+  "preprocessing": "square_pad + resize",
+  "image_size": [
+    256,
+    256
+  ],
+  "image_dtype": "uint8",
+  "mask_values": [
+    0,
+    255
+  ],
+  "n_clients": 2,
+  "total_samples": 1630,
+  "total_patients": 877,
+  "clients": {
+    "client_1": {
+      "train": {
+        "n_samples": 560,
+        "n_patients": 307,
+        "n_benign": 303,
+        "n_malignant": 257,
+        "shape_X": [
+          560,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          560,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          560
+        ],
+        "dtype_X": "uint8",
+        "dtype_masks": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ],
+        "files": [
+          "X_train.npy",
+          "masks_train.npy",
+          "y_train.npy",
+          "metadata_train.csv"
+        ]
+      },
+      "val": {
+        "n_samples": 130,
+        "n_patients": 66,
+        "n_benign": 75,
+        "n_malignant": 55,
+        "shape_X": [
+          130,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          130,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          130
+        ],
+        "dtype_X": "uint8",
+        "dtype_masks": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ],
+        "files": [
+          "X_val.npy",
+          "masks_val.npy",
+          "y_val.npy",
+          "metadata_val.csv"
+        ]
+      },
+      "test": {
+        "n_samples": 119,
+        "n_patients": 66,
+        "n_benign": 64,
+        "n_malignant": 55,
+        "shape_X": [
+          119,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          119,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          119
+        ],
+        "dtype_X": "uint8",
+        "dtype_masks": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ],
+        "files": [
+          "X_test.npy",
+          "masks_test.npy",
+          "y_test.npy",
+          "metadata_test.csv"
+        ]
+      },
+      "total_patients": 439,
+      "total_samples": 809
+    },
+    "client_2": {
+      "train": {
+        "n_samples": 582,
+        "n_patients": 306,
+        "n_benign": 312,
+        "n_malignant": 270,
+        "shape_X": [
+          582,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          582,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          582
+        ],
+        "dtype_X": "uint8",
+        "dtype_masks": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ],
+        "files": [
+          "X_train.npy",
+          "masks_train.npy",
+          "y_train.npy",
+          "metadata_train.csv"
+        ]
+      },
+      "val": {
+        "n_samples": 116,
+        "n_patients": 66,
+        "n_benign": 57,
+        "n_malignant": 59,
+        "shape_X": [
+          116,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          116,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          116
+        ],
+        "dtype_X": "uint8",
+        "dtype_masks": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ],
+        "files": [
+          "X_val.npy",
+          "masks_val.npy",
+          "y_val.npy",
+          "metadata_val.csv"
+        ]
+      },
+      "test": {
+        "n_samples": 123,
+        "n_patients": 66,
+        "n_benign": 63,
+        "n_malignant": 60,
+        "shape_X": [
+          123,
+          256,
+          256,
+          1
+        ],
+        "shape_masks": [
+          123,
+          256,
+          256,
+          1
+        ],
+        "shape_y": [
+          123
+        ],
+        "dtype_X": "uint8",
+        "dtype_masks": "uint8",
+        "mask_unique": [
+          0,
+          255
+        ],
+        "files": [
+          "X_test.npy",
+          "masks_test.npy",
+          "y_test.npy",
+          "metadata_test.csv"
+        ]
+      },
+      "total_patients": 438,
+      "total_samples": 821
+    }
+  }
+}

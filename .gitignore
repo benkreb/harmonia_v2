@@ -1,0 +1,98 @@
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# ========================
+# Virtual Environment
+# ========================
+venv/
+env/
+.venv/
+ENV/
+
+# ========================
+# Dataset (büyük dosyalar — ayrıca indir)
+# ========================
+CBIS-DDSM Dataset/
+
+# ========================
+# Büyük ikili çıktılar (pipeline tarafından üretilir)
+# ========================
+outputs/final_npy/*.npy
+outputs/final_npy_*/*.npy
+outputs/final_npy*/fl_clients/**/*.npy
+outputs/processed/
+outputs/combined_masks*/
+outputs/mass_processed_images/
+outputs/mass_processed_masks/
+outputs/segmentation/checkpoints/
+outputs/segmentation/evaluation/*.npy
+outputs/**/*.pt
+outputs/**/*.pth
+outputs/**/*.onnx
+outputs/**/*.ckpt
+
+
+
+
+# ========================
+# Loglar
+# ========================
+logs/
+
+# ========================
+# IDE
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+AGENTS.md
+# ========================
+# Jupyter
+# ========================
+.ipynb_checkpoints/
+
+# ========================
+# İşletim sistemi
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini
+dashboard.html
+# ========================
+# Ortam / Gizli değişkenler
+# ========================
+.env
+
+# ========================
+# Deployment secrets / generated certificates
+# ========================
+deployment/certs/generated/
+deployment/certs/**/*.pem
+deployment/certs/**/*.key
+deployment/certs/**/*.crt
+deployment/certs/**/*.csr
+
+# ========================
+# Araç konfigürasyonları
+# ========================
+.claude/
+.commandcode/
+
+# ========================
+# Arşiv ve büyük dosyalar
+# ========================
+*.zip
+*.tar.gz
+*.rar

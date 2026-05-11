@@ -1,0 +1,10 @@
+FROM python:3.11-slim
+
+RUN useradd -m -u 1000 flower
+WORKDIR /app
+COPY requirements.txt requirements_fl.txt ./
+RUN pip install --no-cache-dir -r requirements.txt -r requirements_fl.txt
+COPY . .
+USER flower
+EXPOSE 8080
+CMD ["python", "run_fl.py", "simulate", "--config", "benchmark/configs/f1_iid.yaml", "--smoke"]

@@ -1,0 +1,165 @@
+"""
+Step 10: Nihai .npy çıktılarını kaydet.
+
+Her split (train/val/test) için:
+  - X_{split}.npy      : (N, 256, 256, 1) uint8 görüntüler
+  - y_{split}.npy      : (N,) uint8 binary etiket (0=BENIGN, 1=MALIGNANT)
+  - masks_{split}.npy  : (N, 256, 256, 1) uint8 binary maske (0/255)
+  - metadata_{split}.csv: pipeline için tüm metadata (FL için hazır)
+
+Ek olarak: pipeline_summary.json, dataset_info.txt.
+
+Girdi : outputs/step9_splits.csv veya outputs/step9_combined_splits.csv
+Çıktı : outputs/final_npy/
+
+Kullanim: python step10_save_npy.py [--calc | --combined]
+"""
+import sys
+import json
+import numpy as np
+import pandas as pd
+from PIL import Image
+from tqdm import tqdm
+
+from config import OUTPUT_DIR, IMAGE_SIZE
+
+
+FINAL_DIR = OUTPUT_DIR / "final_npy"
+
+
+def build_arrays(sub_df: pd.DataFrame) -> tuple:
+    n = len(sub_df)
+    X = np.empty((n, IMAGE_SIZE, IMAGE_SIZE, 1), dtype=np.uint8)
+    M = np.empty((n, IMAGE_SIZE, IMAGE_SIZE, 1), dtype=np.uint8)
+    y = np.empty(n, dtype=np.uint8)
+    for i, (_, row) in enumerate(tqdm(sub_df.iterrows(), total=n)):
+        img = np.asarray(Image.open(row["processed_image_path"]).convert("L"),
+                         dtype=np.uint8)
+        msk = np.asarray(Image.open(row["processed_mask_path"]).convert("L"),
+                         dtype=np.uint8)
+        msk = ((msk > 127).astype(np.uint8)) * 255  # kesin binary
+        X[i, :, :, 0] = img
+        M[i, :, :, 0] = msk
+        y[i] = int(row["label"])
+    return X, M, y
+
+
+def main():
+    if "--combined" in sys.argv:
+        case_type = "combined"
+    elif "--calc" in sys.argv:
+        case_type = "calc"
+    else:
+        case_type = "mass"
+
+    # Mass (default) writes to final_npy/ so segmentation/config.py can find it.
+    # Calc and combined get their own subdirectory to avoid collision.
+    if case_type == "mass":
+        case_final_dir = FINAL_DIR
+    else:
+        case_final_dir = FINAL_DIR.parent / f"final_npy_{case_type}"
+    case_final_dir.mkdir(parents=True, exist_ok=True)
+
+    df = pd.read_csv(OUTPUT_DIR / f"step9_{case_type}_splits.csv")
+    print(f"[in] step9_{case_type}_splits.csv shape: {df.shape}")
+
+    summary = {
+        "case_type": case_type,
+        "image_size": IMAGE_SIZE,
+        "preprocessing": "square_pad + resize",
+        "image_type": "cropped_lesion_mammogram",
+        "class_mapping": {"BENIGN": 0, "MALIGNANT": 1},
+        "splits": {},
+        "total_samples": int(len(df)),
+        "total_patients": int(df["patient_id"].nunique()),
+    }
+
+    for split_name in ["train", "val", "test"]:
+        sub = df[df["split"] == split_name].reset_index(drop=True)
+        print(f"\n[{split_name}] {len(sub)} samples, "
+              f"{sub['patient_id'].nunique()} patients")
+
+        X, M, y = build_arrays(sub)
+
+        np.save(case_final_dir / f"X_{split_name}.npy", X)
+        np.save(case_final_dir / f"masks_{split_name}.npy", M)
+        np.save(case_final_dir / f"y_{split_name}.npy", y)
+
+        # Metadata CSV
+        meta_cols = [
+            "patient_id", "left_or_right_breast", "image_view", "abnormality_id",
+            "pathology", "label", "pathology_original",
+            "breast_density", "assessment", "subtlety", "mask_area_ratio"
+        ]
+        available_cols = [c for c in meta_cols if c in sub.columns]
+        sub[available_cols].to_csv(case_final_dir / f"metadata_{split_name}.csv",
+                                   index=False)
+
+        # Maske area ratio istatistikleri
+        fg_per_sample = (M > 127).reshape(len(M), -1).sum(axis=1)
+        area_ratios = fg_per_sample / (IMAGE_SIZE * IMAGE_SIZE)
+
+        split_info = {
+            "n_samples": int(len(sub)),
+            "n_patients": int(sub["patient_id"].nunique()),
+            "n_benign": int((y == 0).sum()),
+            "n_malignant": int((y == 1).sum()),
+            "shape_X": list(X.shape),
+            "shape_masks": list(M.shape),
+            "shape_y": list(y.shape),
+            "dtype": str(X.dtype),
+            "image_min_max": [int(X.min()), int(X.max())],
+            "mask_unique": sorted(np.unique(M).tolist()),
+            "mask_area_ratio_mean": float(area_ratios.mean()) if len(area_ratios) > 0 else 0.0,
+            "mask_area_ratio_median": float(np.median(area_ratios)) if len(area_ratios) > 0 else 0.0,
+        }
+        summary["splits"][split_name] = split_info
+
+        print(f"  X: {X.shape} {X.dtype}  masks: {M.shape} {M.dtype}  y: {y.shape}")
+        print(f"  benign: {split_info['n_benign']}  "
+              f"malignant: {split_info['n_malignant']}")
+        if len(area_ratios) > 0:
+            print(f"  mask area ratio: mean={area_ratios.mean():.4f}, "
+                  f"median={np.median(area_ratios):.4f}")
+
+    with open(case_final_dir / "pipeline_summary.json", "w") as f:
+        json.dump(summary, f, indent=2)
+
+    # İnsan-okunabilir özet
+    lines = [
+        f"CBIS-DDSM {case_type.upper()} Dataset - Cropped-Image Pipeline",
+        "=" * 60,
+        f"Goruntu boyutu   : {IMAGE_SIZE}x{IMAGE_SIZE}",
+        f"Preprocessing    : Square Pad + Resize",
+        f"Image type       : Cropped lesion mammogram",
+        f"Toplam sample    : {summary['total_samples']}",
+        f"Toplam hasta     : {summary['total_patients']}",
+        f"Sinif eslemesi   : BENIGN=0, MALIGNANT=1",
+        f"Dtype            : uint8 (image 0-255, mask 0/255)",
+        "",
+        "Split istatistikleri:",
+    ]
+    for s, info in summary["splits"].items():
+        lines.append(
+            f"  {s:5s}: {info['n_samples']:4d} sample "
+            f"({info['n_patients']:3d} patient) | "
+            f"BENIGN {info['n_benign']:3d} / MALIGNANT {info['n_malignant']:3d} | "
+            f"area_ratio_mean={info['mask_area_ratio_mean']:.4f}"
+        )
+    lines += [
+        "",
+        "Dosyalar:",
+        "  X_{split}.npy       (N,256,256,1) uint8 goruntuler",
+        "  masks_{split}.npy   (N,256,256,1) uint8 maskeler (0/255)",
+        "  y_{split}.npy       (N,)          uint8 etiketler",
+        "  metadata_{split}.csv              pathology, patient, view, vb. (FL hazir)",
+    ]
+    with open(case_final_dir / "dataset_info.txt", "w") as f:
+        f.write("\n".join(lines) + "\n")
+    print("\n" + "\n".join(lines))
+
+    print(f"\n[ok] Tum ciktilar: {case_final_dir}")
+
+
+if __name__ == "__main__":
+    main()

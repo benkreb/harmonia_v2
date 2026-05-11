@@ -1,0 +1,25 @@
+name: f2_iid_phe
+seed: 42
+output_dir: outputs/fl/f2_iid_phe
+partition:
+  scenario: iid
+  partition_json_path: outputs/partitions/iid.json
+  n_clients: 2
+client:
+  local_epochs: 5
+  learning_rate: 0.0001
+  batch_size: 8
+  use_amp: true
+server:
+  max_rounds: 20
+  convergence_patience: 7
+  convergence_min_delta: 0.0001
+phe:
+  enabled: true
+  poly_modulus_degree: 8192
+  coeff_mod_bit_sizes: [60, 40, 40, 60]
+  global_scale_bits: 40
+  chunk_size: 8192
+simulation:
+  num_cpus_per_client: 2
+  num_gpus_per_client: 1.0

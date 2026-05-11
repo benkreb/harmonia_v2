@@ -1,0 +1,20 @@
+CBIS-DDSM MASS Dataset - Cropped-Image Pipeline
+============================================================
+Goruntu boyutu   : 256x256
+Preprocessing    : Square Pad + Resize
+Image type       : Cropped lesion mammogram
+Toplam sample    : 1630
+Toplam hasta     : 877
+Sinif eslemesi   : BENIGN=0, MALIGNANT=1
+Dtype            : uint8 (image 0-255, mask 0/255)
+
+Split istatistikleri:
+  train: 1132 sample (613 patient) | BENIGN 603 / MALIGNANT 529 | area_ratio_mean=0.4340
+  val  :  238 sample (132 patient) | BENIGN 117 / MALIGNANT 121 | area_ratio_mean=0.4366
+  test :  260 sample (132 patient) | BENIGN 154 / MALIGNANT 106 | area_ratio_mean=0.4388
+
+Dosyalar:
+  X_{split}.npy       (N,256,256,1) uint8 goruntuler
+  masks_{split}.npy   (N,256,256,1) uint8 maskeler (0/255)
+  y_{split}.npy       (N,)          uint8 etiketler
+  metadata_{split}.csv              pathology, patient, view, vb. (FL hazir)

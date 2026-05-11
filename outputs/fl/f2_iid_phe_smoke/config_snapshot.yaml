@@ -1,0 +1,126 @@
+name: f2_iid_phe_smoke
+seed: 42
+output_dir: outputs\fl\f2_iid_phe_smoke
+segmentation:
+  model:
+    efficientnet_variant: b3
+    in_channels: 1
+    input_size: 256
+    decoder_channels:
+    - 320
+    - 160
+    - 80
+    - 40
+    - 20
+    use_attention_gate: true
+    use_deep_supervision: false
+    dropout: 0.1
+    pretrained: true
+    num_classes: 1
+  data:
+    data_dir: C:\Users\berk\Desktop\harmonia_v2\outputs\final_npy
+    x_train_path: C:\Users\berk\Desktop\harmonia_v2\outputs\final_npy\X_train.npy
+    masks_train_path: C:\Users\berk\Desktop\harmonia_v2\outputs\final_npy\masks_train.npy
+    x_val_path: C:\Users\berk\Desktop\harmonia_v2\outputs\final_npy\X_val.npy
+    masks_val_path: C:\Users\berk\Desktop\harmonia_v2\outputs\final_npy\masks_val.npy
+    x_test_path: C:\Users\berk\Desktop\harmonia_v2\outputs\final_npy\X_test.npy
+    masks_test_path: C:\Users\berk\Desktop\harmonia_v2\outputs\final_npy\masks_test.npy
+    image_size: 256
+    image_channels: 1
+    mask_threshold: 127.5
+    augmentation:
+      rotation_degrees: 15.0
+      translation: 0.1
+      scale:
+      - 0.9
+      - 1.1
+      shear_degrees: 5.0
+      brightness:
+      - 0.85
+      - 1.15
+      contrast:
+      - 0.85
+      - 1.15
+      elastic_alpha: 50.0
+      elastic_sigma: 5.0
+      horizontal_flip_prob: 0.5
+      apply_prob: 0.8
+  training:
+    optimizer: adamw
+    learning_rate: 0.0001
+    weight_decay: 1.0e-05
+    betas:
+    - 0.9
+    - 0.999
+    scheduler: cosine
+    scheduler_min_lr: 1.0e-07
+    scheduler_patience: 10
+    warmup_epochs: 10
+    epochs: 100
+    batch_size: 8
+    gradient_accumulation_steps: 1
+    max_grad_norm: 1.0
+    use_amp: true
+    early_stopping_patience: 25
+    early_stopping_min_delta: 0.0001
+    checkpoint_frequency: 10
+    save_best_only: true
+    save_last: true
+    seed: 42
+    deterministic: true
+    device: cuda
+    num_workers: 2
+  loss:
+    bce_weight: 0.3
+    dice_weight: 0.5
+    focal_weight: 0.1
+    tversky_weight: 0.1
+    bce_pos_weight: 1.5
+    dice_smooth: 0.0001
+    focal_alpha: 0.5
+    focal_gamma: 2.0
+    tversky_alpha: 0.4
+    tversky_beta: 0.6
+    boundary_weight: 0.0
+  logging:
+    tensorboard: true
+    log_frequency: 10
+    verbose: true
+    print_frequency: 5
+    log_dir: logs\fl\f2_iid_phe
+    output_dir: outputs\fl\f2_iid_phe_smoke
+    experiment_name: connectedunet_cbis_ddsm
+client:
+  local_epochs: 1
+  optimizer: adamw
+  learning_rate: 0.0001
+  weight_decay: 1.0e-05
+  use_amp: true
+  max_grad_norm: 1.0
+  batch_size: 8
+  num_workers: 2
+server:
+  max_rounds: 2
+  convergence_patience: 99
+  convergence_min_delta: 0.0001
+  min_fit_clients: 2
+  min_available_clients: 2
+  eval_batch_size: 16
+partition:
+  scenario: iid
+  partition_json_path: outputs/partitions/iid.json
+  n_clients: 2
+phe:
+  enabled: true
+  poly_modulus_degree: 8192
+  coeff_mod_bit_sizes:
+  - 60
+  - 40
+  - 40
+  - 60
+  global_scale_bits: 40
+  chunk_size: 8192
+simulation:
+  num_cpus_per_client: 2
+  num_gpus_per_client: 1.0
+  ray_log_to_driver: false

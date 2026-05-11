@@ -1,0 +1,25 @@
+CBIS-DDSM MASS FL Clients Summary
+====================================
+Preprocessing: square_pad + resize
+Image size   : 256x256
+Dtype        : image uint8, mask uint8 with values [0, 255]
+Clients      : 2
+Total samples: 1630
+Total patients: 877
+
+client_1: 809 samples, 439 patients
+  train:  560 samples | 307 patients | BENIGN 303 / MALIGNANT 257 | shape [560, 256, 256, 1]
+  val  :  130 samples |  66 patients | BENIGN  75 / MALIGNANT  55 | shape [130, 256, 256, 1]
+  test :  119 samples |  66 patients | BENIGN  64 / MALIGNANT  55 | shape [119, 256, 256, 1]
+
+client_2: 821 samples, 438 patients
+  train:  582 samples | 306 patients | BENIGN 312 / MALIGNANT 270 | shape [582, 256, 256, 1]
+  val  :  116 samples |  66 patients | BENIGN  57 / MALIGNANT  59 | shape [116, 256, 256, 1]
+  test :  123 samples |  66 patients | BENIGN  63 / MALIGNANT  60 | shape [123, 256, 256, 1]
+
+Files per client split:
+  X_{split}.npy, masks_{split}.npy, y_{split}.npy, metadata_{split}.csv
+
+Validation notes:
+  Patient IDs are isolated across clients and within train/val/test splits.
+  Arrays are loader-compatible with CBISDDSMDataset(data_dir=<client>, split=<split>).

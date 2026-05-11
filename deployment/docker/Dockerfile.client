@@ -1,0 +1,12 @@
+FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.11 python3.11-venv python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+RUN useradd -m -u 1000 flower
+WORKDIR /app
+COPY requirements.txt requirements_fl.txt ./
+RUN python3.11 -m pip install --no-cache-dir -r requirements.txt -r requirements_fl.txt
+COPY . .
+USER flower
+CMD ["python3.11", "run_fl.py", "simulate", "--config", "benchmark/configs/f1_iid.yaml", "--smoke"]
