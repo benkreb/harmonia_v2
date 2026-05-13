@@ -7,6 +7,7 @@ __pycache__/
 *.so
 *.egg-info/
 *.egg
+*.tsbuildinfo
 dist/
 build/
 .eggs/
@@ -18,6 +19,7 @@ venv/
 env/
 .venv/
 ENV/
+node_modules/
 
 # ========================
 # Dataset (büyük dosyalar — ayrıca indir)
@@ -40,6 +42,9 @@ outputs/**/*.pt
 outputs/**/*.pth
 outputs/**/*.onnx
 outputs/**/*.ckpt
+outputs/**/*.bak
+outputs/fl/**/test_predictions.npy
+outputs/fl/**/evaluation/test_predictions.npy
 
 
 
@@ -58,6 +63,8 @@ logs/
 *.swo
 *~
 AGENTS.md
+vite.config.js
+vite.config.d.ts
 # ========================
 # Jupyter
 # ========================

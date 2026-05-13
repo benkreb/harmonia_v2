@@ -99,6 +99,7 @@ class Evaluator:
                 preds = (probs > 0.5).float()
 
                 for i in range(images.size(0)):
+                    prob = probs[i, 0].cpu().numpy()
                     p = preds[i, 0].cpu().numpy()
                     t = masks[i, 0].cpu().numpy()
 
@@ -108,7 +109,7 @@ class Evaluator:
                     per_sample_dice.append(float(dice))
 
                     if save_predictions:
-                        all_predictions.append(p)
+                        all_predictions.append(prob.astype(np.float32))
                     if save_visualizations:
                         all_targets.append(t)
                         all_images.append(images[i, 0].cpu().numpy())
