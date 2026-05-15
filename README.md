@@ -277,7 +277,7 @@ Float16'nın minimum normal değeri ~6.1×10⁻⁵'tir. `dice_smooth=1e-7` değe
 ## Katkıda Bulunanlar
 
 - **Berk Günberk**
-- **Eyüpcam Işıkgör**
+- **Eyüpcan Işıkgör**
 - **Beril Çitil**
 - **İrem Batıgün**
-- **Kutay Oralı**
+- **Kutay Orallı**
